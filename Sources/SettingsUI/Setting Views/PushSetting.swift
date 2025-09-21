@@ -6,17 +6,17 @@ import SwiftUI
 
 // MARK: - PushSetting
 
-public struct PushSetting<Icon: View, Label: View, Info: View>: View {
+public struct PushSetting<Icon: View, Label: View, Info: View, Value: Hashable>: View {
 
     private let icon: Icon?
     private let label: Label
     private let info: Info?
-    private let value: AnyHashable?
+    private let value: Value?
 
     @Environment(\.settingStyle) private var style
 
     public init(
-        value: AnyHashable?,
+        value: Value?,
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder label: () -> Label,
         @ViewBuilder info: () -> Info,
@@ -28,7 +28,7 @@ public struct PushSetting<Icon: View, Label: View, Info: View>: View {
     }
 
     public init(
-        value: AnyHashable?,
+        value: Value?,
         @ViewBuilder label: () -> Label
     ) {
         self.icon = nil
@@ -38,7 +38,7 @@ public struct PushSetting<Icon: View, Label: View, Info: View>: View {
     }
 
     public init(
-        value: AnyHashable?,
+        value: Value?,
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder label: () -> Label
     ) {
@@ -49,7 +49,7 @@ public struct PushSetting<Icon: View, Label: View, Info: View>: View {
     }
 
     public init(
-        value: AnyHashable?,
+        value: Value?,
         @ViewBuilder label: () -> Label,
         @ViewBuilder info: () -> Info
     ) {
@@ -79,7 +79,7 @@ public struct PushSetting<Icon: View, Label: View, Info: View>: View {
 
 extension PushSetting where Icon == Never, Info == Never {
 
-    public init(value: AnyHashable?, @ViewBuilder label: () -> Label) {
+    public init(value: Value?, @ViewBuilder label: () -> Label) {
         self.icon = nil
         self.label = label()
         self.info = nil
@@ -91,13 +91,13 @@ extension PushSetting where Icon == Never, Info == Never {
 
 extension PushSetting where Icon == Never, Label == Text, Info == Never {
 
-    public init(_ titleKey: LocalizedStringKey, value: AnyHashable?) {
+    public init(_ titleKey: LocalizedStringKey, value: Value?) {
         self.init(value: value) {
             Text(titleKey)
         }
     }
 
-    public init<S: StringProtocol>(_ title: S, value: AnyHashable?) {
+    public init<S: StringProtocol>(_ title: S, value: Value?) {
         self.init(value: value) {
             Text(title)
         }
@@ -108,28 +108,28 @@ extension PushSetting where Icon == Never, Label == Text, Info == Never {
 
 extension PushSetting where Icon == Never, Label == Text, Info == Text {
 
-    public init(_ titleKey: LocalizedStringKey, info: LocalizedStringKey, value: AnyHashable?) {
+    public init(_ titleKey: LocalizedStringKey, info: LocalizedStringKey, value: Value?) {
         self.icon = nil
         self.label = Text(titleKey)
         self.info = Text(info)
         self.value = value
     }
 
-    public init<S: StringProtocol>(_ titleKey: LocalizedStringKey, info: S, value: AnyHashable?) {
+    public init<S: StringProtocol>(_ titleKey: LocalizedStringKey, info: S, value: Value?) {
         self.icon = nil
         self.label = Text(titleKey)
         self.info = Text(info)
         self.value = value
     }
 
-    public init<S: StringProtocol>(_ titleKey: S, info: LocalizedStringKey, value: AnyHashable?) {
+    public init<S: StringProtocol>(_ titleKey: S, info: LocalizedStringKey, value: Value?) {
         self.icon = nil
         self.label = Text(titleKey)
         self.info = Text(info)
         self.value = value
     }
 
-    public init<S: StringProtocol, S2: StringProtocol>(_ title: S, info: S2, value: AnyHashable?) {
+    public init<S: StringProtocol, S2: StringProtocol>(_ title: S, info: S2, value: Value?) {
         self.icon = nil
         self.label = Text(title)
         self.info = Text(info)
@@ -141,7 +141,7 @@ extension PushSetting where Icon == Never, Label == Text, Info == Text {
 
 extension PushSetting where Icon == SettingIcon, Info == Never {
 
-    public init(value: AnyHashable?, systemIcon: String, @ViewBuilder label: () -> Label) {
+    public init(value: Value?, systemIcon: String, @ViewBuilder label: () -> Label) {
         self.init(value: value) {
                 SettingIcon(systemIcon)
             } label: {
@@ -154,7 +154,7 @@ extension PushSetting where Icon == SettingIcon, Info == Never {
 
 extension PushSetting where Icon == SettingIcon, Label == Text, Info == Never {
 
-    public init(_ titleKey: LocalizedStringKey, systemIcon: String, value: AnyHashable?) {
+    public init(_ titleKey: LocalizedStringKey, systemIcon: String, value: Value?) {
         self.init(value: value) {
             SettingIcon(systemIcon)
         } label: {
@@ -162,7 +162,7 @@ extension PushSetting where Icon == SettingIcon, Label == Text, Info == Never {
         }
     }
 
-    public init<S: StringProtocol>(_ title: S, systemIcon: String, value: AnyHashable?) {
+    public init<S: StringProtocol>(_ title: S, systemIcon: String, value: Value?) {
         self.init(value: value) {
             SettingIcon(systemIcon)
         } label: {
@@ -175,28 +175,28 @@ extension PushSetting where Icon == SettingIcon, Label == Text, Info == Never {
 
 extension PushSetting where Icon == SettingIcon, Label == Text, Info == Text {
 
-    public init(_ titleKey: LocalizedStringKey, systemIcon: String, info: LocalizedStringKey, value: AnyHashable?) {
+    public init(_ titleKey: LocalizedStringKey, systemIcon: String, info: LocalizedStringKey, value: Value?) {
         self.icon = SettingIcon(systemIcon)
         self.label = Text(titleKey)
         self.info = Text(info)
         self.value = value
     }
 
-    public init<S: StringProtocol>(_ titleKey: LocalizedStringKey, systemIcon: String, info: S, value: AnyHashable?) {
+    public init<S: StringProtocol>(_ titleKey: LocalizedStringKey, systemIcon: String, info: S, value: Value?) {
         self.icon = SettingIcon(systemIcon)
         self.label = Text(titleKey)
         self.info = Text(info)
         self.value = value
     }
 
-    public init<S: StringProtocol>(_ titleKey: S, systemIcon: String, info: LocalizedStringKey, value: AnyHashable?) {
+    public init<S: StringProtocol>(_ titleKey: S, systemIcon: String, info: LocalizedStringKey, value: Value?) {
         self.icon = SettingIcon(systemIcon)
         self.label = Text(titleKey)
         self.info = Text(info)
         self.value = value
     }
 
-    public init<S: StringProtocol, S2: StringProtocol>(_ title: S, systemIcon: String, info: S2, value: AnyHashable?) {
+    public init<S: StringProtocol, S2: StringProtocol>(_ title: S, systemIcon: String, info: S2, value: Value?) {
         self.icon = SettingIcon(systemIcon)
         self.label = Text(title)
         self.info = Text(info)
