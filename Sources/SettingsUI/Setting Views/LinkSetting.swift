@@ -10,7 +10,7 @@ public struct LinkSetting<Icon: View, Label: View>: View {
 
     private let icon: Icon?
     private let label: Label
-    private let destination: URL
+    private let destination: URL?
 
     @Environment(\.settingStyle) private var style
 
@@ -34,29 +34,41 @@ public struct LinkSetting<Icon: View, Label: View>: View {
     }
 
     public var body: some View {
-        if let icon {
-            Link(destination: destination) {
-                HStack {
-                    icon
-                        .backgroundStyle(style.iconBackgroundColor ?? Color(.tertiaryLabel))
-                        .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
-                    label
-                        .foregroundStyle(style.titleColor ?? .primary)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
+        if let destination {
+            if icon != nil {
+                linkWithIcon(to: destination)
+            } else {
+                link(to: destination)
             }
         } else {
-            Link(destination: destination) {
+            Text("⚠️ Link missing")
+        }
+    }
+
+    @ViewBuilder private func linkWithIcon(to destination: URL) -> some View {
+        Link(destination: destination) {
+            HStack {
+                icon
+                    .backgroundStyle(style.iconBackgroundColor ?? Color(.tertiaryLabel))
+                    .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
                 label
                     .foregroundStyle(style.titleColor ?? .primary)
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
+                Spacer()
             }
-            .alignmentGuide(.listRowSeparatorLeading) { d in
-                d[.leading]
-            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+    }
+
+    @ViewBuilder private func link(to destination: URL) -> some View {
+        Link(destination: destination) {
+            label
+                .foregroundStyle(style.titleColor ?? .primary)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+        }
+        .alignmentGuide(.listRowSeparatorLeading) { d in
+            d[.leading]
         }
     }
 }
