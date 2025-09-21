@@ -15,7 +15,7 @@ public struct LinkSetting<Icon: View, Label: View>: View {
     @Environment(\.settingStyle) private var style
 
     public init(
-        destination: URL,
+        destination: URL?,
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder label: () -> Label
     ) {
@@ -25,7 +25,7 @@ public struct LinkSetting<Icon: View, Label: View>: View {
     }
 
     public init(
-        destination: URL,
+        destination: URL?,
         @ViewBuilder label: () -> Label
     ) {
         self.destination = destination
@@ -77,7 +77,7 @@ public struct LinkSetting<Icon: View, Label: View>: View {
 
 extension LinkSetting where Icon == Never {
 
-    public init(destination: URL, @ViewBuilder label: () -> Label) {
+    public init(destination: URL?, @ViewBuilder label: () -> Label) {
         self.destination = destination
         self.icon = nil
         self.label = label()
@@ -88,7 +88,7 @@ extension LinkSetting where Icon == Never {
 
 extension LinkSetting where Icon == Never, Label == Text {
 
-    public init(_ titleKey: LocalizedStringKey, destination: URL) {
+    public init(_ titleKey: LocalizedStringKey, destination: URL?) {
         self.init(
             destination: destination,
             label: {
@@ -97,7 +97,7 @@ extension LinkSetting where Icon == Never, Label == Text {
         )
     }
 
-    public init<S: StringProtocol>(_ title: S, destination: URL) {
+    public init<S: StringProtocol>(_ title: S, destination: URL?) {
         self.init(
             destination: destination,
             label: {
@@ -111,7 +111,7 @@ extension LinkSetting where Icon == Never, Label == Text {
 
 extension LinkSetting where Icon == SettingIcon {
 
-    public init(systemIcon: String, destination: URL, @ViewBuilder label: () -> Label) {
+    public init(systemIcon: String, destination: URL?, @ViewBuilder label: () -> Label) {
         self.init(
             destination: destination,
             icon: {
@@ -128,7 +128,7 @@ extension LinkSetting where Icon == SettingIcon {
 
 extension LinkSetting where Icon == SettingIcon, Label == Text {
 
-    public init(_ titleKey: LocalizedStringKey, systemIcon: String, destination: URL) {
+    public init(_ titleKey: LocalizedStringKey, systemIcon: String, destination: URL?) {
         self.init(
             destination: destination,
             icon: {
@@ -140,7 +140,7 @@ extension LinkSetting where Icon == SettingIcon, Label == Text {
         )
     }
 
-    public init<S: StringProtocol>(_ title: S, systemIcon: String, destination: URL) {
+    public init<S: StringProtocol>(_ title: S, systemIcon: String, destination: URL?) {
         self.init(
             destination: destination,
             icon: {
@@ -156,7 +156,7 @@ extension LinkSetting where Icon == SettingIcon, Label == Text {
 // MARK: - Preview
 
 #Preview {
-    let url = URL(string: "https://example.com")!
+    let url = URL(string: "https://example.com")
     NavigationStack {
         Form {
             Section {
