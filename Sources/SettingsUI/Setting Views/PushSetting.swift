@@ -15,6 +15,14 @@ public struct PushSetting<Icon: View, Label: View, Info: View, Value: Hashable>:
 
     @Environment(\.settingStyle) private var style
 
+    private var fallbackBackgroundColor: Color {
+        #if os(macOS)
+        Color(.tertiaryLabelColor)
+        #else
+        Color(.tertiaryLabel)
+        #endif
+    }
+
     public init(
         value: Value?,
         @ViewBuilder icon: () -> Icon,
@@ -63,7 +71,7 @@ public struct PushSetting<Icon: View, Label: View, Info: View, Value: Hashable>:
         NavigationLink(value: value) {
             HStack {
                 icon
-                    .backgroundStyle(style.iconBackgroundColor ?? Color(.tertiaryLabel))
+                    .backgroundStyle(style.iconBackgroundColor ?? fallbackBackgroundColor)
                     .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
                 label
                     .foregroundStyle(style.titleColor ?? .primary)

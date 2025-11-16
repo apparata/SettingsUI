@@ -45,6 +45,14 @@ public struct PickerSetting<Icon: View, Label: View, CaseLabel: View, T: Setting
 
     @Environment(\.settingStyle) private var style
 
+    private var fallbackBackgroundColor: Color {
+        #if os(macOS)
+        Color(.tertiaryLabelColor)
+        #else
+        Color(.tertiaryLabel)
+        #endif
+    }
+
     public init(
         values: [T],
         selection: Binding<T>,
@@ -75,7 +83,7 @@ public struct PickerSetting<Icon: View, Label: View, CaseLabel: View, T: Setting
     public var body: some View {
         Picker(selection: $selection, label: HStack {
             icon
-                .backgroundStyle(style.iconBackgroundColor ?? Color(.tertiaryLabel))
+                .backgroundStyle(style.iconBackgroundColor ?? fallbackBackgroundColor)
                 .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
             label
                 .foregroundStyle(style.titleColor ?? .primary)

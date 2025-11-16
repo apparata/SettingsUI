@@ -14,6 +14,14 @@ public struct ButtonSetting<Icon: View, Label: View>: View {
 
     @Environment(\.settingStyle) private var style
 
+    private var fallbackBackgroundColor: Color {
+        #if os(macOS)
+        Color(.tertiaryLabelColor)
+        #else
+        Color(.tertiaryLabel)
+        #endif
+    }
+
     public init(
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder label: () -> Label,
@@ -38,7 +46,7 @@ public struct ButtonSetting<Icon: View, Label: View>: View {
             Button(action: action) {
                 HStack {
                     icon
-                        .backgroundStyle(style.iconBackgroundColor ?? style.tintColor ?? Color(.tertiaryLabel))
+                        .backgroundStyle(style.iconBackgroundColor ?? style.tintColor ?? fallbackBackgroundColor)
                         .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
                     label
                         .tint(style.tintColor)

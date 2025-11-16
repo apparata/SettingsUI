@@ -14,6 +14,14 @@ public struct LinkSetting<Icon: View, Label: View>: View {
 
     @Environment(\.settingStyle) private var style
 
+    private var fallbackBackgroundColor: Color {
+        #if os(macOS)
+        Color(.tertiaryLabelColor)
+        #else
+        Color(.tertiaryLabel)
+        #endif
+    }
+
     public init(
         destination: URL?,
         @ViewBuilder icon: () -> Icon,
@@ -49,7 +57,7 @@ public struct LinkSetting<Icon: View, Label: View>: View {
         Link(destination: destination) {
             HStack {
                 icon
-                    .backgroundStyle(style.iconBackgroundColor ?? Color(.tertiaryLabel))
+                    .backgroundStyle(style.iconBackgroundColor ?? fallbackBackgroundColor)
                     .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
                 label
                     .foregroundStyle(style.titleColor ?? .primary)

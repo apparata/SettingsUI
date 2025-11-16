@@ -14,6 +14,14 @@ public struct LabelSetting<Icon: View, Label: View, Info: View>: View {
 
     @Environment(\.settingStyle) private var style
 
+    private var fallbackBackgroundColor: Color {
+        #if os(macOS)
+        Color(.tertiaryLabelColor)
+        #else
+        Color(.tertiaryLabel)
+        #endif
+    }
+
     public init(
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder label: () -> Label,
@@ -53,7 +61,7 @@ public struct LabelSetting<Icon: View, Label: View, Info: View>: View {
     public var body: some View {
         HStack {
             icon
-                .backgroundStyle(style.iconBackgroundColor ?? Color(.tertiaryLabel))
+                .backgroundStyle(style.iconBackgroundColor ?? fallbackBackgroundColor)
                 .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
             label
                 .foregroundStyle(style.titleColor ?? .primary)

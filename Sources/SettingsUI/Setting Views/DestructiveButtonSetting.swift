@@ -14,6 +14,14 @@ public struct DestructiveButtonSetting<Icon: View, Label: View>: View {
 
     @Environment(\.settingStyle) private var style
 
+    private var fallbackBackgroundColor: Color {
+        #if os(macOS)
+        Color(.tertiaryLabelColor)
+        #else
+        Color(.tertiaryLabel)
+        #endif
+    }
+
     public init(
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder label: () -> Label,
@@ -45,7 +53,7 @@ public struct DestructiveButtonSetting<Icon: View, Label: View>: View {
         Button(role: .destructive, action: action) {
             HStack {
                 icon
-                    .backgroundStyle(style.destructiveColor ?? style.iconBackgroundColor ?? Color(.tertiaryLabel))
+                    .backgroundStyle(style.destructiveColor ?? style.iconBackgroundColor ?? fallbackBackgroundColor)
                     .foregroundStyle(style.iconForegroundColor ?? .inversePrimary)
                 label
                     .fontWeight(.semibold)

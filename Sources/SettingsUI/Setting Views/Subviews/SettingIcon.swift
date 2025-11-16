@@ -46,6 +46,14 @@ public struct SettingIcon: View {
 
     private let image: Image
 
+    private var fallbackBackgroundStyle: AnyShapeStyle {
+        #if os(macOS)
+        AnyShapeStyle(Color(.windowBackgroundColor))
+        #else
+        AnyShapeStyle(Color(.systemBackground))
+        #endif
+    }
+
     /// Creates a setting icon using a system image name.
     ///
     /// This initializer creates an icon using SF Symbols system images. The icon will
@@ -87,7 +95,7 @@ public struct SettingIcon: View {
     /// within a rounded rectangle background. Otherwise, it's displayed as a standalone icon.
     public var body: some View {
         RoundedRectangle(cornerRadius: iconCornerRadius, style: .continuous)
-            .fill(backgroundStyle ?? AnyShapeStyle(Color(.systemBackground)))
+            .fill(backgroundStyle ?? fallbackBackgroundStyle)
             .frame(width: iconSize, height: iconSize)
             .overlay {
                 VStack {
