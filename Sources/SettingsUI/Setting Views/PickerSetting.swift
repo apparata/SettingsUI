@@ -566,7 +566,6 @@ private enum APIEnvironment: String, SettingPickable, CaseIterable {
         }
     }
 }
-#endif
 
 #Preview {
 
@@ -627,3 +626,5 @@ private enum APIEnvironment: String, SettingPickable, CaseIterable {
         }
     }
 }
+
+#endif

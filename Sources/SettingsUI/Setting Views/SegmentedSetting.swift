@@ -141,7 +141,6 @@ private enum APIEnvironment: String, SettingPickable, CaseIterable {
         rawValue
     }
 }
-#endif
 
 #Preview {
 
@@ -175,3 +174,5 @@ private enum APIEnvironment: String, SettingPickable, CaseIterable {
         }
     }
 }
+
+#endif
